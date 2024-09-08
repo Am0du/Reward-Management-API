@@ -1,7 +1,3 @@
-To include documentation for using Swagger in your `README.md`, you should outline how to access and use the Swagger UI for API documentation. Here’s how you can update your `README.md` file to include Swagger documentation instructions:
-
----
-
 # Reward Management Spring Boot Application
 
 This repository contains the Reward Management Spring Boot application. This guide will walk you through the steps required to pull the repository, set it up locally, and configure the necessary properties to get the application running. Additionally, it includes instructions for accessing and using the Swagger API documentation.
