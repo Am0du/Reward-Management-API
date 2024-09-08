@@ -14,13 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import reward_management.dto.response.AuthResponseDto;
 import reward_management.dto.request.SignUpDto;
 import reward_management.dto.response.UserDto;
+import reward_management.enums.RoleEnum;
 import reward_management.exceptions.BadRequest;
 import reward_management.management.entity.Reward;
 import reward_management.security.JwtUtils;
+import reward_management.user.Entity.Role;
 import reward_management.user.Entity.User;
 import reward_management.user.repository.UserRepository;
 import reward_management.user.service.UserServiceImpl;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,28 +64,39 @@ public class RegisterTest {
     @Test
     public void testRegisterUser_Success() {
 
+        UUID userId = UUID.randomUUID();
+        String email = "test@example.com";
+        String firstName = "John";
+        String lastName = "Doe";
+        String password = "password";
+
         SignUpDto signUpDto = new SignUpDto();
-        signUpDto.setEmail("test@example.com");
-        signUpDto.setFirstName("John");
-        signUpDto.setLastName("Doe");
-        signUpDto.setPassword("password");
+        signUpDto.setEmail(email);
+        signUpDto.setFirstName(firstName);
+        signUpDto.setLastName(lastName);
+        signUpDto.setPassword(password);
 
         Reward reward = new Reward();
-        reward.setTotalCashback(0);
-        reward.setCurrentBalance(0);
+        reward.setTotalCashback(0.0);
+        reward.setCurrentBalance(0.0);
 
         User user = new User();
-        user.setEmail(signUpDto.getEmail());
-        user.setFirstName(signUpDto.getFirstName());
-        user.setLastName(signUpDto.getLastName());
+        user.setId(userId);
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setReward(reward);
+
+        Role role = new Role();
+        role.setRole(RoleEnum.ROLE_USER.toString());
+        user.addRoles(role);
 
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
         when(authentication.getPrincipal()).thenReturn(userDetails);
-        when(userDetails.getUsername()).thenReturn(signUpDto.getEmail());
+        when(userDetails.getUsername()).thenReturn(email);
         when(jwtUtils.createJwt.apply(any(UserDetails.class))).thenReturn("testToken");
 
         AuthResponseDto<UserDto> response = userService.registerUser(signUpDto);
@@ -91,7 +105,8 @@ public class RegisterTest {
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
         assertTrue(response.isSuccessful());
         assertEquals("testToken", response.getAccessToken());
-        assertEquals(signUpDto.getEmail(), response.getData().getEmail());
+        assertNotNull(response.getData());
+        assertEquals(email, response.getData().getEmail());
     }
 
     @Test
