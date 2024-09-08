@@ -130,11 +130,9 @@ You can find the Swagger configuration and annotations in the `src/main/java/rew
 - **Security**: Ensure that your `SECRET_KEY` is securely managed and not hard-coded in the application code.
 
 ## API Request and Response samples
-[Authentication](document/user.md)
-[Reward Management](document/management.md)
+- [Authentication](document/user.md)
+- [Reward Management](document/management.md)
 
-
-document
 ## Conclusion
 
 With the above steps, you should have the Reward Management application up and running locally. You can also access the Swagger UI to interact with and test the API endpoints. If you encounter any issues, please check the configuration or consult the documentation for further details.
