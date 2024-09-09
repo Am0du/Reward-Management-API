@@ -133,6 +133,9 @@ You can find the Swagger configuration and annotations in the `src/main/java/rew
 - [Authentication](document/user.md)
 - [Reward Management](document/management.md)
 
+## Database Design
+- [Database design schema](document/db_design.png)
+
 ## Conclusion
 
 With the above steps, you should have the Reward Management application up and running locally. You can also access the Swagger UI to interact with and test the API endpoints. If you encounter any issues, please check the configuration or consult the documentation for further details.
